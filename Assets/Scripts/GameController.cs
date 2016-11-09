@@ -1,17 +1,43 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Timers;
 
 public class GameController : MonoBehaviour {
 	public GameObject ballTemplate;
 
 	public Text firstPlayerScoreText;
 	public Text secondPlayerScoreText;
+	public Text timeInSeconds;
 
 	private int firstPlayerScoreCount;
 	private int secondPlayerScoreCount;
+	private AudioSource Audi;
+
+	public int WinPoints;
+	public int timeSeconds;
+
+	System.Timers.Timer t;
+
+	void Start(){
+		Audi = GetComponent<AudioSource> ();
+		t = new Timer ();
+		t.Elapsed += new ElapsedEventHandler (onTimer);
+		t.Interval = 1000;
+		t.Start ();
+	}
+
+	void onTimer(object source, ElapsedEventArgs e){
+		timeSeconds--;
+	}
+	void Update(){
+		timeInSeconds.text = timeSeconds.ToString ();
+		timeInSeconds.fontSize=8;
+		CheckTime ();
+	}
 
 	void OnTriggerExit(Collider other) {
+		Audi.Play ();
 		print ("OnTriggerExit with object" + other.gameObject.tag);
 		if (other.gameObject.CompareTag ("Ball")) {
 			print ("OnTriggerExit if statement");
@@ -28,8 +54,42 @@ public class GameController : MonoBehaviour {
 			Rigidbody ballRb = ball.GetComponent<Rigidbody> ();
 			ballRb.velocity = new Vector3 (0,0,0);
 			ballRb.AddForce (new Vector3 (1, 0, 1) * 20);
+			CheckWin ();
 			//Destroy (ball);
 			//Instantiate (ballTemplate);
 		}
+	}
+	void CheckWin(){
+		if (firstPlayerScoreCount == WinPoints) {
+			firstPlayerScoreText.text = "WIN!";
+			GameOver ();
+		} 
+		if (secondPlayerScoreCount == WinPoints) {
+			secondPlayerScoreText.text = "WIN!";
+			GameOver ();
+		} 
+
+	}
+	void CheckTime(){
+		if(timeSeconds == 0)
+		{
+			if (firstPlayerScoreCount > secondPlayerScoreCount) {
+				firstPlayerScoreText.text = "WIN!";
+				GameOver ();
+			} else if (firstPlayerScoreCount < secondPlayerScoreCount) {
+				secondPlayerScoreText.text = "WIN!";
+				GameOver ();
+			} else {
+				firstPlayerScoreText.text = "DRAW";
+				secondPlayerScoreText.text = "DRAW";
+				GameOver ();
+			}
+		}
+	}
+	void GameOver(){
+		firstPlayerScoreCount = 0;
+		secondPlayerScoreCount = 0;
+		timeSeconds = 120;
+
 	}
 }

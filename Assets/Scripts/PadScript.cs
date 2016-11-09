@@ -17,6 +17,9 @@ public class PadScript : MonoBehaviour {
 		float horizontal = Input.GetAxis ("Horizontal");
 		Vector3 force = new Vector3 (horizontal, 0, 0) * multiplier;
 		rigidbody.AddForce (force);
+		horizontal = Input.GetAxis ("Mouse X");
+		force = new Vector3 (horizontal, 0, 0) * multiplier;
+		rigidbody.AddForce (force);
 	}
 
 
