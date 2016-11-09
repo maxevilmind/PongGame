@@ -24,9 +24,12 @@ public class GameController : MonoBehaviour {
 				secondPlayerScoreCount++;
 				secondPlayerScoreText.text = secondPlayerScoreCount.ToString();
 			}
-
-			Destroy (ball);
-			Instantiate (ballTemplate);
+			ball.transform.position = new Vector3(10,0,10);
+			Rigidbody ballRb = ball.GetComponent<Rigidbody> ();
+			ballRb.velocity = new Vector3 (0,0,0);
+			ballRb.AddForce (new Vector3 (1, 0, 1) * 20);
+			//Destroy (ball);
+			//Instantiate (ballTemplate);
 		}
 	}
 }
