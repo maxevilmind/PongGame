@@ -12,12 +12,15 @@ public class GameController : MonoBehaviour {
 
 	private int firstPlayerScoreCount;
 	private int secondPlayerScoreCount;
+	private AudioSource Audi;
+
 	public int WinPoints;
 	public int timeSeconds;
 
 	System.Timers.Timer t;
 
 	void Start(){
+		Audi = GetComponent<AudioSource> ();
 		t = new Timer ();
 		t.Elapsed += new ElapsedEventHandler (onTimer);
 		t.Interval = 1000;
@@ -34,6 +37,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	void OnTriggerExit(Collider other) {
+		Audi.Play ();
 		print ("OnTriggerExit with object" + other.gameObject.tag);
 		if (other.gameObject.CompareTag ("Ball")) {
 			print ("OnTriggerExit if statement");

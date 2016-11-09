@@ -6,6 +6,9 @@ public class BallController : MonoBehaviour {
 	public int initialForceMultiplier = 1;
 	public Rigidbody rigidbody;
 	public float InputForceScale = 10.0f;
+	private AudioSource audioSource;
+	public AudioClip WallSound;
+	public AudioClip PaddleSound;
 	// Use this for initialization
 	void Start () {
 		Vector3 force = 
@@ -14,5 +17,16 @@ public class BallController : MonoBehaviour {
 		force = force * InputForceScale;
 
 		rigidbody.AddForce (force);
+		audioSource = GetComponent<AudioSource> ();
+	}
+	void OnCollisionEnter(Collision collision) {
+		GameObject gameObject =
+			collision.gameObject;
+
+		if (gameObject.CompareTag ("Wall")) {
+			audioSource.PlayOneShot (WallSound);
+		} else if (gameObject.CompareTag ("Paddle")) {
+			audioSource.PlayOneShot (PaddleSound);
+		}
 	}
 }
