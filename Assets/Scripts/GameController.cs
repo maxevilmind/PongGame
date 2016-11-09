@@ -30,6 +30,7 @@ public class GameController : MonoBehaviour {
 	void Update(){
 		timeInSeconds.text = timeSeconds.ToString ();
 		timeInSeconds.fontSize=8;
+		CheckTime ();
 	}
 
 	void OnTriggerExit(Collider other) {
@@ -57,25 +58,34 @@ public class GameController : MonoBehaviour {
 	void CheckWin(){
 		if (firstPlayerScoreCount == WinPoints) {
 			firstPlayerScoreText.text = "WIN!";
-			t.Stop ();
+			GameOver ();
 		} 
 		if (secondPlayerScoreCount == WinPoints) {
 			secondPlayerScoreText.text = "WIN!";
-			t.Stop ();
+			GameOver ();
 		} 
+
+	}
+	void CheckTime(){
 		if(timeSeconds == 0)
 		{
 			if (firstPlayerScoreCount > secondPlayerScoreCount) {
 				firstPlayerScoreText.text = "WIN!";
-				t.Stop ();
+				GameOver ();
 			} else if (firstPlayerScoreCount < secondPlayerScoreCount) {
 				secondPlayerScoreText.text = "WIN!";
-				t.Stop ();
+				GameOver ();
 			} else {
 				firstPlayerScoreText.text = "DRAW";
 				secondPlayerScoreText.text = "DRAW";
-				t.Stop ();
+				GameOver ();
 			}
 		}
+	}
+	void GameOver(){
+		firstPlayerScoreCount = 0;
+		secondPlayerScoreCount = 0;
+		timeSeconds = 120;
+
 	}
 }
